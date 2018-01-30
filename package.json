@@ -1,0 +1,18 @@
+{
+  "name": "webpack_boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^0.28.9",
+    "file-loader": "^1.1.6",
+    "lodash": "^4.17.4",
+    "style-loader": "^0.20.1",
+    "webpack": "^3.10.0"
+  }
+}

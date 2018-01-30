@@ -1,0 +1,15 @@
+/node_modules
+/.sass-cache
+/.htaccess
+/app/deploy/*
+/app/development/*
+/app/source/vendor/*
+/npm-debug.log
+/cred.txt
+/.idea/*
+.idea/*
+/tmp/*
+/vendor/*
+/vendors/*
+/vendors-extensions/*
+
