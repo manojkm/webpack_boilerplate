@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import printMe from './print.js';
+import './css/main.css';
 
 
 if (process.env.NODE_ENV !== 'production') {
