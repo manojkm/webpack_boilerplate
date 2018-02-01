@@ -1,6 +1,9 @@
 import _ from 'lodash';
 import printMe from './print.js';
+import {hello, sup} from './js/module';
+
 import './css/main.css';
+import './scss/main.scss';
 
 
 if (process.env.NODE_ENV !== 'production') {
@@ -20,5 +23,8 @@ function component() {
 
     return element;
 }
+
+hello();
+sup();
 
 document.body.appendChild(component());
