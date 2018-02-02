@@ -12,4 +12,6 @@
 /vendor/*
 /vendors/*
 /vendors-extensions/*
-
+.DS_Store
+/dist/*
+*.log

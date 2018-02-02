@@ -5,14 +5,18 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 
 module.exports = {
+
+    context: path.resolve('./app'),
+
     entry: {
         app: './src/index.js',
         about: './src/js/about.js'
     },
 
     output: {
-        filename: '[name].bundle.js',
-        path: path.resolve(__dirname, 'dist') //__dirname refers to the directory where this webpack.config.js lives
+        path: path.resolve(__dirname, 'dist'), //__dirname refers to the directory where this webpack.config.js lives
+        filename: 'js/[name].bundle.js',
+        publicPath: '/'
     },
 
     module: {
@@ -58,17 +62,17 @@ module.exports = {
 
     plugins: [
         new CleanWebpackPlugin(['dist']),
-        new ExtractTextPlugin('styles.css'), // Output name
+        new ExtractTextPlugin('css/styles.css'), // Output name
         new HtmlWebpackPlugin({
             // title: 'Production'
             filename: 'index.html',  // Output name
-            template: 'src/views/index.html', // Path
+            template: './src/views/index.html', // Path
             chunks: ['app']
         }),
         new HtmlWebpackPlugin({
             // title: 'Production'
             filename: 'about.html',  // Output name
-            template: 'src/views/about.html', // Path
+            template: './src/views/about.html', // Path
             chunks: ['about']
         })
     ]

@@ -1,7 +1,7 @@
 {
   "name": "webpack_boilerplate",
   "version": "1.0.0",
-  "description": "",
+  "description": "Static website boilerplate using webpack and bootstrap",
   "main": "index.js",
   "scripts": {
     "watch": "webpack --watch --config webpack.dev.js",
