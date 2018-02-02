@@ -8,13 +8,18 @@ module.exports = {
 
     context: path.resolve('./app'),
 
+    // An entry point. It’s the main module of your application
+    // that references all the other modules
     entry: {
         app: './src/index.js',
         about: './src/js/about.js'
     },
 
     output: {
-        path: path.resolve(__dirname, 'dist'), //__dirname refers to the directory where this webpack.config.js lives
+        // The directory where the bundle should be placed.
+        // __dirname refers to the directory where this webpack.config.js lives
+        path: path.resolve(__dirname, 'dist'),
+        // The name of the resulting bundle
         filename: 'js/[name].bundle.js',
         publicPath: '/'
     },
@@ -42,6 +47,8 @@ module.exports = {
                 test: /\.scss$/,
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
+
+                    // Loaders are applied from right to left
                     // use: ['css-loader', 'postcss-loader', 'sass-loader']
 
                     use: [
@@ -54,14 +61,14 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
-                loader: 'babel-loader'
+                use: ['babel-loader']
             }
         ]
 
     },
 
     plugins: [
-        new CleanWebpackPlugin(['dist']),
+        new CleanWebpackPlugin(['./dist']),
         new ExtractTextPlugin('css/styles.css'), // Output name
         new HtmlWebpackPlugin({
             // title: 'Production'
