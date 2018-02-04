@@ -1,13 +1,11 @@
 /node_modules
-/.sass-cache
-/.htaccess
+.sass-cache
+.htaccess
 /app/deploy/*
 /app/development/*
 /app/source/vendor/*
-/npm-debug.log
-/cred.txt
-/.idea/*
-.idea/*
+cred.txt
+/.idea
 /tmp/*
 /vendor/*
 /vendors/*
@@ -15,3 +13,4 @@
 .DS_Store
 /dist/*
 *.log
+yarn.lock

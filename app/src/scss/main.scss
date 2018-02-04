@@ -1,4 +1,5 @@
 @import 'variables';
+@import "~bootstrap/scss/bootstrap";
 
 body {
   background: $blue;
@@ -6,4 +7,9 @@ body {
 
 p {
   font-size: responsive;
+}
+
+.hello {
+  color: red;
+  background: url('../img/Makeup-icon.png');
 }

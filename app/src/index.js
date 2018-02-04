@@ -1,24 +1,25 @@
-import './imports';
+import {hello, sup} from './js/module';
+
+import 'jquery';
+import 'bootstrap';
+
+import './css/main.css';
+import './scss/main.scss';
+
+/*TODO got the below from https://github.com/manojkm/static-website-webpack-boilerplate/blob/master/app/js/imports.js */
+// import "bootstrap/dist/js/bootstrap.js";
+// import "bootstrap/dist/css/bootstrap.css";
+// import "../scss/style.scss";
+// import "font-awesome/css/font-awesome.css";
+
+$(function () {
+    console.log('jquery works');
+});
 
 if (process.env.NODE_ENV !== 'production') {
     console.log('Looks like we are in development mode!');
 }
 
-
-function component() {
-    var element = document.createElement('div');
-    var btn = document.createElement('button');
-
-    // Lodash, currently included via a script, is required for this line to work
-    element.innerHTML = _.join(['Hello', 'webpack'], ' ');
-    btn.innerHTML = 'Click me and check the console!';
-    btn.onclick = printMe;
-    element.appendChild(btn);
-
-    return element;
-}
-
 hello();
 sup();
 
-document.body.appendChild(component());
