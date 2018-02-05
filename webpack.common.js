@@ -19,13 +19,19 @@ module.exports = {
     entry: {
         app: './src/index', // file extension after index is optional for .js files
         about: './src/js/about'
+
+        // Got the below from gitter https://gitter.im/webpack/webpack?source=all-rooms-list (Learn)
+        // embed: [
+        //     './src/scss/about.scss',
+        //     './src/scss/main.scss'
+        // ]
     },
 
     output: {
         // The directory where the bundle should be placed.
         // __dirname refers to the directory where this webpack.config.js lives
         path: BUILD_DIR,
-        // The name of the resulting bundle
+        // The name of the resulting bundle based on keys in entry above
         filename: 'js/[name].bundle.[chunkhash].js',
         sourceMapFilename: '[file].map',  // I am still not sure.. seems not working ?
         publicPath: '/assets' // This is used to generate URLs to e.g. images
@@ -68,6 +74,15 @@ module.exports = {
                 ]
             },
             {
+                test : /\.(woff|woff2|eot|ttf|otf)$/, //Learn in detail later.. I don't know whats happening
+                use : {
+                    loader : 'file-loader',
+                    options : {
+                        name : './font/[name].[ext]'
+                    }
+                }
+            },
+            {
                 test: /\.js$/,
                 exclude: /node_modules/,   // The exclude pattern is important so that we don't apply babel transform to all the dependencies!
                 use: ['babel-loader'] // process *.js files using babel-loader
@@ -85,7 +100,7 @@ module.exports = {
         new CleanWebpackPlugin([BUILD_DIR]),
         new ExtractTextPlugin(
             {
-                filename: 'css/[name].css'
+                filename: 'css/[name].[chunkhash].css'
             }
         ), // Output name
         new HtmlWebpackPlugin({
@@ -112,7 +127,12 @@ module.exports = {
         }),
         new CopyWebpackPlugin([
             {from: './src/robots.txt'}
-        ])
+        ]),
+
+        new webpack.optimize.CommonsChunkPlugin({ //Learn in detail later.. I don't know whats happening
+            name: 'common',
+            minChunks: 2,
+        })
     ]
 
 };
