@@ -10,7 +10,10 @@ var APP_DIR = path.resolve(__dirname, './app');
 var BUILD_DIR = path.resolve(__dirname, './dist');
 
 module.exports = {
+
+    // The base path which will be used to resolve entry points
     context: APP_DIR,
+
     // An entry point. It’s the main module of your application
     // that references all the other modules
     entry: {
@@ -25,7 +28,7 @@ module.exports = {
         // The name of the resulting bundle
         filename: 'js/[name].bundle.[chunkhash].js',
         sourceMapFilename: '[file].map',  // I am still not sure.. seems not working ?
-        publicPath: '/'
+        publicPath: '/assets' // This is used to generate URLs to e.g. images
     },
 
     module: {
@@ -66,11 +69,16 @@ module.exports = {
             },
             {
                 test: /\.js$/,
-                exclude: /node_modules/,
-                use: ['babel-loader']
+                exclude: /node_modules/,   // The exclude pattern is important so that we don't apply babel transform to all the dependencies!
+                use: ['babel-loader'] // process *.js files using babel-loader
             }
         ]
 
+    },
+
+    resolve: {
+        // you can now require('file') instead of require('file.coffee')
+        extensions: ['*', '.js', '.json', '.coffee']
     },
 
     plugins: [
@@ -81,22 +89,26 @@ module.exports = {
             }
         ), // Output name
         new HtmlWebpackPlugin({
-            // title: 'Production'
+            // title: 'Production',
             filename: 'index.html',  // Output name
             template: './src/views/index.html', // Path
+            description: 'TEST DESCRIPTION',
+            extraFiles: {
+                css: 'static/css/bootstrap.min.css' // Learning..... Usage on index.html <%= htmlWebpackPlugin.options.extraFiles.css %>
+            },
             chunks: ['app']
         }),
         new HtmlWebpackPlugin({
-            // title: 'Production'
+            // title: 'Production',
             filename: 'about.html',  // Output name
             template: './src/views/about.html', // Path
             chunks: ['about']
         }),
-        new webpack.ProvidePlugin({
-            // inject ES5 modules as global vars
+        new webpack.ProvidePlugin({ // It scans the source code for the given identifier and replaces it with a reference to the given module
             $: 'jquery',
             jQuery: 'jquery',
-            'window.jQuery': 'jquery',
+            jquery: 'jquery',
+            'window.jQuery': 'jquery'
         }),
         new CopyWebpackPlugin([
             {from: './src/robots.txt'}

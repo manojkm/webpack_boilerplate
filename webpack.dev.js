@@ -4,7 +4,7 @@ const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 module.exports = merge(common, {
     devtool: 'inline-source-map', // This will work only for JS files.
-    devServer: {
+    devServer: { // Pass options to webpack-dev-server
         contentBase: './dist'
     },
     plugins: [

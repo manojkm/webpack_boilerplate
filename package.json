@@ -7,7 +7,7 @@
     "watch": "webpack --watch --config webpack.dev.js",
     "start": "webpack-dev-server --config webpack.dev.js",
     "server": "node server.js",
-    "build": "webpack --progress --hide-modules --config webpack.prod.js"
+    "build": "webpack --progress --hide-modules --config webpack.prod.js -p"
   },
   "author": "",
   "license": "ISC",

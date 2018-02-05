@@ -5,6 +5,11 @@
 
     <!-- TODO: I got the mainfest thing from the following URL. So pls try to understand and add to the admin theme https://github.com/manojkm/static-website-webpack-boilerplate-->
 
+    <meta name= "description" content="<%= htmlWebpackPlugin.options.description %>"/>
+
+    <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.extraFiles.css %>"> <!-- Learning -->
+
+
     <!-- Disable tap highlight on IE -->
     <meta name="msapplication-tap-highlight" content="no">
 
@@ -28,6 +33,7 @@
 
     <!-- Color the status bar on mobile devices -->
     <meta name="theme-color" content="#263238">
+
 
 
 </head>
