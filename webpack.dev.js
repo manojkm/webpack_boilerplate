@@ -1,11 +1,35 @@
+const path = require('path');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
+var BUILD_DIR = path.resolve(__dirname, './app/dist');
+
 module.exports = merge(common, {
     devtool: 'inline-source-map', // This will work only for JS files.
     devServer: { // Pass options to webpack-dev-server
-        contentBase: './dist'
+        contentBase: BUILD_DIR
+    },
+    module: {
+        loaders: [
+            {
+                test: /\.(gif|png|jpe?g|svg)$/i,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[path][name].[ext]'
+                        }
+                    },
+                    {
+                        loader: 'image-webpack-loader', //Minify PNG, JPEG, GIF, SVG and WEBP images
+                        options: {
+                            bypassOnDebug: true,
+                        }
+                    }
+                ]
+            },
+        ]
     },
     plugins: [
         new BrowserSyncPlugin(

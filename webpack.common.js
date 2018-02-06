@@ -5,9 +5,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-
-var APP_DIR = path.resolve(__dirname, './app');     // __dirname refers to the directory where this webpack.config.js lives
-var BUILD_DIR = path.resolve(__dirname, './dist');
+var APP_DIR = path.resolve(__dirname, './app/src');     // __dirname refers to the directory where this webpack.config.js lives
+var BUILD_DIR = path.resolve(__dirname, './app/dist');
 
 module.exports = {
 
@@ -22,8 +21,8 @@ module.exports = {
         // app: ['./home.js', './events.js', './vendor.js'],
 
         //Multiple files, multiple outputs
-        app: './src/index', // file extension after index is optional for .js files
-        about: './src/js/about'
+        app: './index', // file extension after index is optional for .js files
+        about: './js/about'
 
         // Got the below from gitter https://gitter.im/webpack/webpack?source=all-rooms-list (Learn)
         // embed: [
@@ -52,7 +51,7 @@ module.exports = {
                     //use: ['css-loader', 'postcss-loader']  // Here Loaders are applied from right to left
 
                     use: [ // Here Loaders are applied from bottom to top
-                        {loader: 'css-loader', options: {sourceMap: true}},
+                        {loader: 'css-loader', options: {sourceMap: true}}, // The css-loader also takes care of minification when called in the production mode (-p) e.g webpack -p
                         {loader: 'postcss-loader', options: {sourceMap: true}}
                     ]
                 })
@@ -69,23 +68,11 @@ module.exports = {
                 })
             },
             {
-                test: /\.(gif|png|jpe?g|svg)$/i,
-                use: [
-                    'file-loader',
-                    {
-                        loader: 'image-webpack-loader', //Minify PNG, JPEG, GIF, SVG and WEBP images
-                        options: {
-                            bypassOnDebug: true,
-                        }
-                    }
-                ]
-            },
-            {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
                 use: {
                     loader: 'file-loader',
                     options: {
-                        name: './font/[name].[ext]'
+                        name: '[path][name].[ext]'
                     }
                 }
             },
@@ -126,7 +113,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             // title: 'Production',
             filename: 'index.html',  // Output name
-            template: './src/views/index.html', // Path
+            template: './views/index.html', // Path
             description: 'TEST DESCRIPTION',
             extraFiles: {
                 css: 'static/css/bootstrap.min.css' // Learning..... Usage on index.html <%= htmlWebpackPlugin.options.extraFiles.css %>
@@ -136,12 +123,12 @@ module.exports = {
         new HtmlWebpackPlugin({
             // title: 'Production',
             filename: 'about.html',  // Output name
-            template: './src/views/about.html', // Path
+            template: './views/about.html', // Path
             chunks: ['about']
         }),
 
         new CopyWebpackPlugin([
-            {from: './src/robots.txt'}
+            {from: './robots.txt'}
         ])
 
 

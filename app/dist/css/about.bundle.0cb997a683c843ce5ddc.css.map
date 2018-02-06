@@ -1,0 +1,1 @@
+{"version":3,"sources":["./scss/about.scss","./scss/variables.scss"],"names":[],"mappings":"AAEA,KACE,eCHQ","file":"css/about.bundle.0cb997a683c843ce5ddc.css","sourcesContent":["@import 'variables';\n\ncard {\n  background: $blue;\n}\n\n\n\n\n// WEBPACK FOOTER //\n// ./scss/about.scss","$blue:blue;\n\n\n// WEBPACK FOOTER //\n// ./scss/variables.scss"],"sourceRoot":""}

@@ -1,3 +1,4 @@
+const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
@@ -7,6 +8,29 @@ const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = merge(common, {
     devtool: 'source-map',
+
+    module: {
+        loaders: [
+            {
+                test: /\.(gif|png|jpe?g|svg)$/i,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[path][hash].[ext]'
+                        }
+                    },
+                    {
+                        loader: 'image-webpack-loader', //Minify PNG, JPEG, GIF, SVG and WEBP images
+                        options: {
+                            bypassOnDebug: true,
+                        }
+                    }
+                ]
+            },
+        ]
+    },
+
     plugins: [
         new webpack.optimize.AggressiveMergingPlugin(),
         new webpack.optimize.OccurrenceOrderPlugin(),
@@ -51,6 +75,10 @@ module.exports = merge(common, {
         //     'process.env.NODE_ENV': JSON.stringify('production')
         // }),
 
-        new webpack.DefinePlugin({'process.env': {'NODE_ENV': JSON.stringify('production')}})
+        new webpack.DefinePlugin({
+            'process.env': {
+                'NODE_ENV': JSON.stringify('production')
+            }
+        })
     ]
 });

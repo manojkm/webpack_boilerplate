@@ -1,3 +1,7 @@
+/*Out of the box webpack knows how to consume JavaScript modules in a variety of formats, the most notable two are:
+ES2015 import statements
+CommonJS require() statements*/
+
 import {hello, sup} from './js/module';
 
 // import 'jquery';
