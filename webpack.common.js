@@ -1,12 +1,12 @@
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 
-var APP_DIR = path.resolve(__dirname, './app');
+var APP_DIR = path.resolve(__dirname, './app');     // __dirname refers to the directory where this webpack.config.js lives
 var BUILD_DIR = path.resolve(__dirname, './dist');
 
 module.exports = {
@@ -17,6 +17,11 @@ module.exports = {
     // An entry point. It’s the main module of your application
     // that references all the other modules
     entry: {
+
+        // Multiple files, bundled together example
+        // app: ['./home.js', './events.js', './vendor.js'],
+
+        //Multiple files, multiple outputs
         app: './src/index', // file extension after index is optional for .js files
         about: './src/js/about'
 
@@ -28,13 +33,14 @@ module.exports = {
     },
 
     output: {
-        // The directory where the bundle should be placed.
-        // __dirname refers to the directory where this webpack.config.js lives
-        path: BUILD_DIR,
-        // The name of the resulting bundle based on keys in entry above
-        filename: 'js/[name].bundle.[chunkhash].js',
-        sourceMapFilename: '[file].map',  // I am still not sure.. seems not working ?
-        publicPath: '/assets' // This is used to generate URLs to e.g. images
+        path: BUILD_DIR, // The directory where the bundle should be placed.
+        filename: './js/[name].bundle.[chunkhash].js',  // The name of the resulting bundle based on keys in entry above. [name] gets replaced with the object key from entry
+        sourceMapFilename: '[file].map',
+        publicPath: '', // This is used to generate URLs to e.g. images
+
+        // this all related to source maps - Learn later
+        devtoolModuleFilenameTemplate: '[resourcePath]',
+        devtoolFallbackModuleFilenameTemplate: '[resourcePath]?[hash]'
     },
 
     module: {
@@ -42,9 +48,10 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    //use: ['css-loader', 'postcss-loader']  // Loaders are applied from right to left
-                    use: [
+                    fallback: 'style-loader', // inject CSS to page
+                    //use: ['css-loader', 'postcss-loader']  // Here Loaders are applied from right to left
+
+                    use: [ // Here Loaders are applied from bottom to top
                         {loader: 'css-loader', options: {sourceMap: true}},
                         {loader: 'postcss-loader', options: {sourceMap: true}}
                     ]
@@ -53,7 +60,7 @@ module.exports = {
             {
                 test: /\.scss$/,
                 use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader', // inject CSS to page
+                    fallback: 'style-loader',
                     use: [
                         {loader: 'css-loader', options: {sourceMap: true}},// translates CSS into CommonJS modules
                         {loader: 'postcss-loader', options: {sourceMap: true}},  // Run post css actions
@@ -74,11 +81,11 @@ module.exports = {
                 ]
             },
             {
-                test : /\.(woff|woff2|eot|ttf|otf)$/, //Learn in detail later.. I don't know whats happening
-                use : {
-                    loader : 'file-loader',
-                    options : {
-                        name : './font/[name].[ext]'
+                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        name: './font/[name].[ext]'
                     }
                 }
             },
@@ -91,7 +98,7 @@ module.exports = {
 
     },
 
-    resolve: {
+    resolve: { // Check this later.. bit advanced https://github.com/JedWatson/react-select/issues/176
         // you can now require('file') instead of require('file.coffee')
         extensions: ['*', '.js', '.json', '.coffee']
     },
@@ -100,9 +107,22 @@ module.exports = {
         new CleanWebpackPlugin([BUILD_DIR]),
         new ExtractTextPlugin(
             {
-                filename: 'css/[name].[chunkhash].css'
+                filename: 'css/[name].bundle.[chunkhash].css' // Output name
             }
-        ), // Output name
+        ),
+        new webpack.ProvidePlugin({ // It scans the source code for the given identifier and replaces it with a reference to the given module
+            $: 'jquery',
+            jQuery: 'jquery',
+            jquery: 'jquery',
+            'window.jQuery': 'jquery'
+        }),
+
+        new webpack.optimize.CommonsChunkPlugin({ // http://tips.tutorialhorizon.com/2016/11/07/webpack-commonschunkplugin-htmlwebpackplugin-setup/
+            name: 'commons',
+            filename: './js/commons-[hash].js',
+            chunks: ['app'], // The order of this array matters. Make sure the name matches the entry name above.
+            minChunks: 2,
+        }),
         new HtmlWebpackPlugin({
             // title: 'Production',
             filename: 'index.html',  // Output name
@@ -111,7 +131,7 @@ module.exports = {
             extraFiles: {
                 css: 'static/css/bootstrap.min.css' // Learning..... Usage on index.html <%= htmlWebpackPlugin.options.extraFiles.css %>
             },
-            chunks: ['app']
+            chunks: ['commons', 'app'] // The order of this array matters
         }),
         new HtmlWebpackPlugin({
             // title: 'Production',
@@ -119,20 +139,12 @@ module.exports = {
             template: './src/views/about.html', // Path
             chunks: ['about']
         }),
-        new webpack.ProvidePlugin({ // It scans the source code for the given identifier and replaces it with a reference to the given module
-            $: 'jquery',
-            jQuery: 'jquery',
-            jquery: 'jquery',
-            'window.jQuery': 'jquery'
-        }),
+
         new CopyWebpackPlugin([
             {from: './src/robots.txt'}
-        ]),
+        ])
 
-        new webpack.optimize.CommonsChunkPlugin({ //Learn in detail later.. I don't know whats happening
-            name: 'common',
-            minChunks: 2,
-        })
+
     ]
 
 };

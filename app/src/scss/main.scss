@@ -2,8 +2,14 @@
 @import "~bootstrap/scss/bootstrap"; /*tilda symbol (~) does the trick. That symbol allows you to access node_modules
 folder so you can import the bootstrap.*/
 
-
 @import 'variables';
+
+@font-face {
+  font-family: 'ProximaNova';
+  src:  url('../fonts/ProximaNova-Light.otf') format('otf');
+  font-weight: 600;
+  font-style: normal;
+}
 
 
 body {
@@ -15,6 +21,7 @@ p {
 }
 
 .hello {
+  font-family: 'ProximaNova';
   color: red;
   background: url('../img/Makeup-icon.png');
 }

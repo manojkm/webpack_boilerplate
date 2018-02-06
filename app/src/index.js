@@ -1,6 +1,6 @@
 import {hello, sup} from './js/module';
 
-import 'jquery';
+// import 'jquery';
 import 'bootstrap';
 
 import './css/main.css';
