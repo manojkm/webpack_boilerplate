@@ -1,9 +1,10 @@
 const path = require('path');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const assembleWebpack = require('assemble-webpack');
 
 var APP_DIR = path.resolve(__dirname, './app/src');     // __dirname refers to the directory where this webpack.config.js lives
 var BUILD_DIR = path.resolve(__dirname, './app/dist');
@@ -90,11 +91,19 @@ module.exports = {
 
                     {
                         loader: 'url-loader',
-                        options: { limit: 40000}
+                        options: {limit: 30000, name: '[name]-[hash].[ext]'}
                     },
                     {
                         loader: 'image-webpack-loader', //Minify PNG, JPEG, GIF, SVG and WEBP images
                         options: {bypassOnDebug: true}
+                    }
+                ]
+            },
+            {
+                test: /\.(hbs)$/,
+                use: [
+                    {
+                        loader: 'assemble-webpack'
                     }
                 ]
             },
@@ -104,6 +113,7 @@ module.exports = {
                 test: /\.html$/,
                 loader: 'html-loader'
             },
+
 
             {
                 test: /\.js$/,
@@ -139,6 +149,15 @@ module.exports = {
             chunks: ['app'], // The order of this array matters. Make sure the name matches the entry name above.
             minChunks: 2,
         }),
+
+
+        new assembleWebpack.AttachedPlugin({
+            baseLayout: './templates/layouts/default.hbs',
+            basePages: ['./templates/pages/**/*.hbs'],
+            partialsLayout: ['./templates/partials/**/*.hbs'],
+        }),
+
+
         new HtmlWebpackPlugin({
             // title: 'Production',
             filename: 'index.html',  // Output name
