@@ -63,19 +63,48 @@ module.exports = {
                     use: [
                         {loader: 'css-loader', options: {sourceMap: true}},// translates CSS into CommonJS modules
                         {loader: 'postcss-loader', options: {sourceMap: true}},  // Run post css actions
-                        {loader: 'sass-loader', options: {sourceMap: true}} // compiles Sass to CSS
+                        {
+                            loader: 'sass-loader', options: {sourceMap: true},
+                        } // compiles Sass to CSS
                     ]
                 })
             },
             {
-                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                test: /.(ttf|otf|eot|woff(2)?)(\?[a-z0-9]+)?$/,
                 use: {
                     loader: 'file-loader',
                     options: {
-                        name: '[path][name].[ext]'
+                        name: '[path][name].[ext]',
                     }
                 }
             },
+            {
+                test: /\.(gif|png|jpe?g|svg)$/i,
+                use: [
+                    // {
+                    //     loader: 'file-loader',
+                    //     options: {
+                    //         name: '[path][name].[ext]'
+                    //     }
+                    // },
+
+                    {
+                        loader: 'url-loader',
+                        options: { limit: 40000}
+                    },
+                    {
+                        loader: 'image-webpack-loader', //Minify PNG, JPEG, GIF, SVG and WEBP images
+                        options: {bypassOnDebug: true}
+                    }
+                ]
+            },
+
+            {
+                // HTML LOADER
+                test: /\.html$/,
+                loader: 'html-loader'
+            },
+
             {
                 test: /\.js$/,
                 exclude: /node_modules/,   // The exclude pattern is important so that we don't apply babel transform to all the dependencies!

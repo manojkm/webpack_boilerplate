@@ -11,23 +11,6 @@ module.exports = merge(common, {
 
     module: {
         loaders: [
-            {
-                test: /\.(gif|png|jpe?g|svg)$/i,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[path][hash].[ext]'
-                        }
-                    },
-                    {
-                        loader: 'image-webpack-loader', //Minify PNG, JPEG, GIF, SVG and WEBP images
-                        options: {
-                            bypassOnDebug: true,
-                        }
-                    }
-                ]
-            },
         ]
     },
 
