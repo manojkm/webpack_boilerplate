@@ -4,7 +4,6 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const assembleWebpack = require('assemble-webpack');
 
 var APP_DIR = path.resolve(__dirname, './app/src');     // __dirname refers to the directory where this webpack.config.js lives
 var BUILD_DIR = path.resolve(__dirname, './app/dist');
@@ -81,6 +80,7 @@ module.exports = {
             },
             {
                 test: /\.(gif|png|jpe?g|svg)$/i,
+                exclude: /node_modules/,
                 use: [
                     // {
                     //     loader: 'file-loader',
@@ -91,7 +91,7 @@ module.exports = {
 
                     {
                         loader: 'url-loader',
-                        options: {limit: 30000, name: '[name]-[hash].[ext]'}
+                        options: {limit: 10000, name: '[name]-[hash].[ext]'}
                     },
                     {
                         loader: 'image-webpack-loader', //Minify PNG, JPEG, GIF, SVG and WEBP images
@@ -99,15 +99,6 @@ module.exports = {
                     }
                 ]
             },
-            {
-                test: /\.(hbs)$/,
-                use: [
-                    {
-                        loader: 'assemble-webpack'
-                    }
-                ]
-            },
-
             {
                 // HTML LOADER
                 test: /\.html$/,
@@ -140,7 +131,8 @@ module.exports = {
             $: 'jquery',
             jQuery: 'jquery',
             jquery: 'jquery',
-            'window.jQuery': 'jquery'
+            'window.jQuery': 'jquery',
+            'windows.jQuery': 'jquery'
         }),
 
         new webpack.optimize.CommonsChunkPlugin({ // http://tips.tutorialhorizon.com/2016/11/07/webpack-commonschunkplugin-htmlwebpackplugin-setup/
@@ -149,14 +141,6 @@ module.exports = {
             chunks: ['app'], // The order of this array matters. Make sure the name matches the entry name above.
             minChunks: 2,
         }),
-
-
-        new assembleWebpack.AttachedPlugin({
-            baseLayout: './templates/layouts/default.hbs',
-            basePages: ['./templates/pages/**/*.hbs'],
-            partialsLayout: ['./templates/partials/**/*.hbs'],
-        }),
-
 
         new HtmlWebpackPlugin({
             // title: 'Production',
